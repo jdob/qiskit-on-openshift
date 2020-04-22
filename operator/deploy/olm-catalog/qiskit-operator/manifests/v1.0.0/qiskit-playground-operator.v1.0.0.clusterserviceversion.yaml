@@ -19,7 +19,7 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
-    - description: QiskitPlayground is the Schema for the qiskitplaygrounds API
+    - description: QiskitPlayground is a Jupyter notebook with the qiskit libraries enabled
       kind: QiskitPlayground
       name: qiskitplaygrounds.dobtech.io
       version: v1
