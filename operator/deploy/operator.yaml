@@ -16,7 +16,7 @@ spec:
       containers:
         - name: qiskit-operator
           # Replace this with the built image name
-          image: REPLACE_IMAGE
+          image: quay.io/jdob/qiskit-playground-operator:1.0
           command:
           - qiskit-operator
           imagePullPolicy: Always

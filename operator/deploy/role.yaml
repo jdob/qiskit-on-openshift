@@ -5,6 +5,18 @@ metadata:
   name: qiskit-operator
 rules:
 - apiGroups:
+  - "route.openshift.io"
+  resources:
+  - "routes"
+  verbs:
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
+- apiGroups:
   - ""
   resources:
   - pods
