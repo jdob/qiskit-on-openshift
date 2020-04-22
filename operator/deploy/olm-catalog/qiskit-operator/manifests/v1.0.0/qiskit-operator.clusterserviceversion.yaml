@@ -13,7 +13,7 @@ metadata:
         }
       ]
     capabilities: Basic Install
-  name: qiskit-operator.v1.0.0
+  name: qiskit-playground-operator.v1.0.0
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -63,7 +63,7 @@ spec:
                       fieldPath: metadata.name
                 - name: OPERATOR_NAME
                   value: qiskit-operator
-                image: quay.io/jdob/qiskit-playground-operator:1.0
+                image: quay.io/jdob/qiskit-playground-op:1.0
                 imagePullPolicy: Always
                 name: qiskit-operator
                 resources: {}
