@@ -1,0 +1,176 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "dobtech.io/v1",
+          "kind": "QiskitPlayground",
+          "metadata": {
+            "name": "example-playground"
+          }
+        }
+      ]
+    capabilities: Basic Install
+  name: qiskit-operator.v1.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: QiskitPlayground is the Schema for the qiskitplaygrounds API
+      kind: QiskitPlayground
+      name: qiskitplaygrounds.dobtech.io
+      version: v1
+  displayName: Qiskit Operator
+  description: Deploys a Jupyter notebook configured with the qiskit library
+  keywords: ['open source']
+  provider:
+    name: Red Hat
+  maintainers:
+    - name: Jason Dobies
+      email: jdobies@redhat.com
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments:
+      - name: qiskit-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: qiskit-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                name: qiskit-operator
+            spec:
+              containers:
+              - command:
+                - qiskit-operator
+                env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['olm.targetNamespaces']
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: qiskit-operator
+                image: quay.io/jdob/qiskit-playground-operator:1.0
+                imagePullPolicy: Always
+                name: qiskit-operator
+                resources: {}
+              serviceAccountName: qiskit-operator
+      permissions:
+      - rules:
+        - apiGroups:
+          - route.openshift.io
+          resources:
+          - routes
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - services/finalizers
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - get
+          - create
+        - apiGroups:
+          - apps
+          resourceNames:
+          - qiskit-operator
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          verbs:
+          - get
+        - apiGroups:
+          - apps
+          resources:
+          - replicasets
+          - deployments
+          verbs:
+          - get
+        - apiGroups:
+          - dobtech.io
+          resources:
+          - '*'
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        serviceAccountName: qiskit-operator
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - ""
+  maintainers:
+  - {}
+  maturity: alpha
+  provider: {}
+  version: 1.0.0
